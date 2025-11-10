@@ -1,0 +1,43 @@
+.tabela-filmes {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  margin-top: 24px;
+}
+
+.tabela-filmes th {
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.tabela-filmes td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.tabela-filmes .acoes button {
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  margin-right: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.tabela-filmes .editar {
+  background-color: #007bff;
+}
+
+.tabela-filmes .excluir {
+  background-color: #dc3545;
+}
+
+.tabela-filmes .nenhum {
+  text-align: center;
+  padding: 12px;
+  color: #777;
+}
