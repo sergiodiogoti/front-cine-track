@@ -7,7 +7,7 @@ type Filme = {
   genero: string;
   ano: string;
   nota: number;
-  critica: string;
+  critica?: string;
 };
 
 type Props = {
@@ -37,6 +37,7 @@ export default function TabelaFilmes({ dados, aoEditar, aoExcluir }: Props) {
           <th>Gênero</th>
           <th>Ano</th>
           <th>Nota</th>
+          <th>Critica</th>
           <th>Ações</th>
         </tr>
       </thead>
@@ -54,6 +55,7 @@ export default function TabelaFilmes({ dados, aoEditar, aoExcluir }: Props) {
               <td>{filme.genero}</td>
               <td>{filme.ano}</td>
               <td>{filme.nota}</td>
+              <td>{filme.critica}</td>
               <td className="acoes">
                 <button className="editar" onClick={() => aoEditar(filme)}>
                   Editar

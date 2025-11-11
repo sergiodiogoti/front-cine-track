@@ -17,11 +17,8 @@ export default function FormularioFilme({ aoEnviar, editando }: Props) {
     critica: '',
   });
 
-
   useEffect(() => {
-    if (editando) {
-      setTimeout(() => setForm(editando), 0);
-    }
+    if (editando) setTimeout(() => setForm(editando), 0);
   }, [editando]);
 
   const aoMudar = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -31,62 +28,86 @@ export default function FormularioFilme({ aoEnviar, editando }: Props) {
 
   const submeter = (e: React.FormEvent) => {
     e.preventDefault();
-
     const filmeComId = form.id ? form : { ...form, id: crypto.randomUUID() };
-
     aoEnviar(filmeComId);
-    setForm({
-      id: '',
-      titulo: '',
-      genero: '',
-      ano: '',
-      nota: 0,
-      critica: '',
-    });
+    setForm({ id: '', titulo: '', genero: '', ano: '', nota: 0, critica: '' });
   };
 
   return (
-    <form onSubmit={submeter}>
-      <input
-        type="text"
-        name="titulo"
-        placeholder="Título"
-        value={form.titulo}
-        onChange={aoMudar}
-        required
-      />
-      <input
-        type="text"
-        name="genero"
-        placeholder="Gênero"
-        value={form.genero}
-        onChange={aoMudar}
-        required
-      />
-      <input
-        type="number"
-        name="ano"
-        placeholder="Ano"
-        value={form.ano}
-        onChange={aoMudar}
-        required
-      />
-      <input
-        type="number"
-        name="nota"
-        placeholder="Nota (0–10)"
-        value={form.nota}
-        onChange={aoMudar}
-        required
-      />
-      <textarea
-        name="critica"
-        placeholder="Escreva uma crítica (opcional)"
-        value={form.critica}
-        onChange={aoMudar}
-      ></textarea>
+    <div className="form-filme">
+      <h3>Adicionar Novo Filme</h3>
 
-      <button type="submit">{editando ? 'Atualizar' : 'Adicionar'} Filme</button>
-    </form>
+      <form onSubmit={submeter}>
+        <div className="campo">
+          <label htmlFor="titulo">Título</label>
+          <input
+            type="text"
+            id="titulo"
+            name="titulo"
+            placeholder="Digite o título do filme"
+            value={form.titulo}
+            onChange={aoMudar}
+            required
+          />
+        </div>
+
+        <div className="campo">
+          <label htmlFor="genero">Gênero</label>
+          <input
+            type="text"
+            id="genero"
+            name="genero"
+            placeholder="Ex: Ação, Drama..."
+            value={form.genero}
+            onChange={aoMudar}
+            required
+          />
+        </div>
+
+        <div className="campo">
+          <label htmlFor="ano">Ano</label>
+          <input
+            id="ano"
+            name="ano"
+            type="number"
+            placeholder="Ex: 2024"
+            value={form.ano || ''}
+            onChange={aoMudar}
+            required
+          />
+        </div>
+
+        <div className="campo">
+          <label htmlFor="nota">Nota (0–10)</label>
+          <input
+            id="nota"
+            name="nota"
+            type="number"
+            min="0"
+            max="10"
+            value={form.nota || ''}
+            onChange={aoMudar}
+            required
+          />
+        </div>
+
+        <div className="campo campo--full">
+          <label htmlFor="critica">Crítica (opcional)</label>
+          <textarea
+            id="critica"
+            name="critica"
+            placeholder="Escreva sua opinião sobre o filme..."
+            value={form.critica || ''}
+            onChange={aoMudar}
+          />
+        </div>
+
+        <div className="linha-botao">
+          <button type="submit">
+            {editando ? 'Atualizar Filme' : 'Adicionar Filme'}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
