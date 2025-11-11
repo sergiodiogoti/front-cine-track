@@ -207,3 +207,139 @@ form button {
 form button:hover {
   background: linear-gradient(90deg, #0056b3, #004094);
 }
+
+.cards-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start; /* ou center se quiser centralizar */
+  align-items: stretch;
+  margin: 8px 0 40px;
+}
+
+/* Cada card */
+.card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.06);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+/* Largura: 5 por linha em telas grandes.
+   Usamos calc para subtrair gaps; ajuste 16px se mudar gap. */
+.card {
+  flex: 0 1 calc((100% / 5) - (16px * 4 / 5));
+  min-width: 160px; /* evita ficar muito estreito */
+  max-width: 280px; /* limita o card se preferir */
+}
+
+/* Hover leve */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.12);
+}
+
+/* Poster */
+.poster-wrap {
+  width: 100%;
+  height: 160px; /* altura fixa para as imagens (consistente) */
+  background: #f2f2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* importantíssimo para não deformar */
+  display: block;
+}
+
+/* Placeholder se não tiver poster */
+.poster.placeholder {
+  color: #777;
+  font-size: 14px;
+  padding: 12px;
+}
+
+/* Conteúdo do card */
+.card-body {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 auto;
+}
+
+.card-title {
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.2;
+  color: #111;
+  text-transform: none;
+}
+
+.card-meta {
+  font-size: 13px;
+  color: #555;
+  margin: 0;
+}
+
+/* Botão */
+.btn-add {
+  margin-top: auto; /* empurra para baixo do card */
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #0070f3;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-add:hover { opacity: 0.95; }
+
+/* ===== Responsividade: ajusta número de colunas ===== */
+
+/* Large screens: 5 por linha (default) */
+
+/* >= 1280px keep 5 */
+/* >= 1024px -> 4 por linha */
+@media (max-width: 1200px) {
+  .card { flex: 0 1 calc((100% / 4) - (16px * 3 / 4)); }
+}
+
+/* >= 768px -> 3 por linha */
+@media (max-width: 900px) {
+  .card { flex: 0 1 calc((100% / 3) - (16px * 2 / 3)); }
+}
+
+/* tablet -> 2 por linha */
+@media (max-width: 620px) {
+  .card { flex: 0 1 calc((100% / 2) - (16px / 2)); }
+}
+
+/* mobile -> 1 por linha */
+@media (max-width: 420px) {
+  .card { flex: 0 1 100%; }
+  .poster-wrap { height: 190px; } /* mais alto no mobile se quiser */
+}
+
+.alerta {
+  opacity: 0;
+  transform: translateY(-8px);
+  animation: aparecer 0.3s ease forwards;
+}
+
+@keyframes aparecer {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
