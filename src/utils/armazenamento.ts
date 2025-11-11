@@ -6,6 +6,7 @@ export type Filme = {
   ano: string;
   nota: number;
   critica?: string;
+  poster?: string | null;
 };
 
 /*Chave usada no localStorage*/
