@@ -1,60 +1,55 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { useFilmes } from '@/contexto/FilmesContext';
 import FormularioFilme from '@/componentes/FormularioFilme';
 import TabelaFilmes from '@/componentes/TabelaFilmes';
-import { carregarFilmes, salvarFilmes } from '@/utils/armazenamento';
-import type { Filme } from '@/utils/armazenamento';
+import { useState } from 'react';
 
 export default function PaginaFilmes() {
-  const [lista, setLista] = useState<Filme[]>(() => carregarFilmes());
-  const [editando, setEditando] = useState<Filme | null>(null);
-  const [busca, setBusca] = useState('');
+const { listaFiltrada, adicionarOuAtualizar, remover, buscar, mensagem, limparMensagem, editando, editar } = useFilmes();
 
-  useEffect(() => {
-    salvarFilmes(lista);
-  }, [lista]);
+  const [buscaTexto, setBuscaTexto] = useState('');
 
-  const adicionarOuAtualizar = (filme: Filme) => {
-    setLista(prev => {
-      const existe = prev.some(x => x.id === filme.id);
-      return existe
-        ? prev.map(x => (x.id === filme.id ? { ...x, ...filme } : x))
-        : [...prev, filme];
-    });
-    setEditando(null);
+  const aoBuscar = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const texto = e.target.value;
+    setBuscaTexto(texto);
+    buscar(texto);
   };
-
-  const remover = (id: string) => {
-    if (!confirm(`Tem certeza que deseja excluir este filme?`)) return;
-    setLista(prev => prev.filter(x => x.id !== id));
-  };
-
-  const filtrada = useMemo(
-    () => lista.filter(x => x.titulo.toLowerCase().includes(busca.toLowerCase())),
-    [lista, busca]
-  );
 
   return (
-    <main>
-      <h2>Minha Lista de Filmes</h2>
+    <main style={{ padding: '20px' }}>
+      <h2>🎬 Meus Filmes</h2>
 
-      <div style={{ margin: '12px 0' }}>
+      {/* Formulário de cadastro/edição */}
+      <FormularioFilme aoEnviar={adicionarOuAtualizar} editando={editando} />
+
+       <div style={{ margin: '12px 0' }}>
         <input
-          placeholder="Buscar por título"
-          value={busca}
-          onChange={e => setBusca(e.target.value)}
+          type="text"
+          placeholder="Buscar por título..."
+          value={buscaTexto}
+          onChange={aoBuscar}
         />
       </div>
 
-      <FormularioFilme aoEnviar={adicionarOuAtualizar} editando={editando} />
+      {/* Mensagem de feedback */}
+      {mensagem && (
+        <div
+          style={{
+            background: 'rgb(77, 167, 77)',
+            border: '1px solid #00a000',
+            color: '1px solid rgb(182, 207, 182)',
+            padding: '8px',
+            marginTop: '12px',
+            borderRadius: '6px',
+          }}
+          onAnimationEnd={limparMensagem}
+        >
+          {mensagem}
+        </div>
+      )}
 
-      <hr style={{ margin: '16px 0' }} />
-
-      <TabelaFilmes dados={filtrada} aoEditar={setEditando} aoExcluir={remover} />
-
-      <p style={{ marginTop: 16 }}>
-        
-      </p>
+      {/* Tabela de filmes */}
+      <TabelaFilmes dados={listaFiltrada} aoEditar={editar} aoExcluir={remover} />
     </main>
   );
 }
